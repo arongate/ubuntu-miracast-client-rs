@@ -105,7 +105,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development guide.
 ## Related Projects
 
 - [ubuntu-miracast-server](https://github.com/arongate/ubuntu-miracast-server) — the companion Miracast sink (receiver) application
-- [ubuntu-miracast-client](https://github.com/eddypepy/ubuntu-miracast-client) — the original Python implementation (being replaced by this Rust version)
+- [ubuntu-miracast-client](https://github.com/arongate/ubuntu-miracast-client) — the original Python implementation (being replaced by this Rust version)
 
 ## License
 
