@@ -123,9 +123,7 @@ fn build_settings_page() -> gtk::Widget {
     page.add(&video_group);
 
     // Audio group
-    let audio_group = adw::PreferencesGroup::builder()
-        .title("Audio")
-        .build();
+    let audio_group = adw::PreferencesGroup::builder().title("Audio").build();
 
     let audio_row = adw::ActionRow::builder()
         .title("Stream Audio")
@@ -143,9 +141,7 @@ fn build_settings_page() -> gtk::Widget {
     page.add(&audio_group);
 
     // Advanced group
-    let advanced_group = adw::PreferencesGroup::builder()
-        .title("Advanced")
-        .build();
+    let advanced_group = adw::PreferencesGroup::builder().title("Advanced").build();
 
     let timeout_row = adw::ActionRow::builder()
         .title("Discovery Timeout")

@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use tracing::{debug, info, warn};
 
 /// Application configuration.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct AppConfig {
     pub general: GeneralConfig,
@@ -40,16 +40,6 @@ pub struct StreamingConfig {
 pub struct AdvancedConfig {
     pub discovery_timeout_secs: u64,
     pub connection_timeout_secs: u64,
-}
-
-impl Default for AppConfig {
-    fn default() -> Self {
-        Self {
-            general: GeneralConfig::default(),
-            streaming: StreamingConfig::default(),
-            advanced: AdvancedConfig::default(),
-        }
-    }
 }
 
 impl Default for GeneralConfig {
@@ -100,7 +90,10 @@ impl ConfigManager {
                 AppConfig::default()
             })
         } else {
-            info!("No config found, creating defaults at {}", config_path.display());
+            info!(
+                "No config found, creating defaults at {}",
+                config_path.display()
+            );
             let config = AppConfig::default();
             // Create directory and save defaults
             if let Some(parent) = config_path.parent() {
@@ -111,7 +104,10 @@ impl ConfigManager {
             config
         };
 
-        Ok(Self { config, config_path })
+        Ok(Self {
+            config,
+            config_path,
+        })
     }
 
     /// Get reference to the current configuration.
@@ -137,9 +133,7 @@ impl ConfigManager {
 
     /// Get the XDG config file path.
     fn config_file_path() -> PathBuf {
-        if let Some(proj_dirs) =
-            ProjectDirs::from("com", "github.eddypepy", "MiracastClient")
-        {
+        if let Some(proj_dirs) = ProjectDirs::from("com", "github.eddypepy", "MiracastClient") {
             proj_dirs.config_dir().join("config.toml")
         } else {
             // Fallback
@@ -149,9 +143,7 @@ impl ConfigManager {
 
     /// Get the XDG data directory path (for session history, etc.).
     pub fn data_dir() -> PathBuf {
-        if let Some(proj_dirs) =
-            ProjectDirs::from("com", "github.eddypepy", "MiracastClient")
-        {
+        if let Some(proj_dirs) = ProjectDirs::from("com", "github.eddypepy", "MiracastClient") {
             proj_dirs.data_dir().to_path_buf()
         } else {
             PathBuf::from(".local/share/miracast-client")

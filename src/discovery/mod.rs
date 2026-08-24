@@ -35,7 +35,9 @@ impl MiracastDevice {
     pub fn is_sink(&self) -> bool {
         matches!(
             self.wfd_type,
-            Some(WfdDeviceType::PrimarySink | WfdDeviceType::SecondarySink | WfdDeviceType::DualRole)
+            Some(
+                WfdDeviceType::PrimarySink | WfdDeviceType::SecondarySink | WfdDeviceType::DualRole
+            )
         )
     }
 }

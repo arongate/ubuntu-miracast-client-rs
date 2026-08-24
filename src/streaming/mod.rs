@@ -85,7 +85,10 @@ impl StreamingPipeline {
             .property(
                 "caps",
                 gst::Caps::builder("video/x-raw")
-                    .field("framerate", gst::Fraction::new(self.config.framerate as i32, 1))
+                    .field(
+                        "framerate",
+                        gst::Fraction::new(self.config.framerate as i32, 1),
+                    )
                     .build(),
             )
             .build()?;
@@ -100,7 +103,9 @@ impl StreamingPipeline {
             .property("bitrate", self.config.quality.bitrate_kbps())
             .property("key-int-max", self.config.framerate * 2)
             .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create x264enc: {e}. Install gstreamer1.0-plugins-ugly"))?;
+            .map_err(|e| {
+                anyhow::anyhow!("Failed to create x264enc: {e}. Install gstreamer1.0-plugins-ugly")
+            })?;
 
         // H.264 caps filter (Constrained Baseline Profile)
         let h264caps = gst::ElementFactory::make("capsfilter")
@@ -115,7 +120,9 @@ impl StreamingPipeline {
         // MPEG-TS muxer
         let muxer = gst::ElementFactory::make("mpegtsmux")
             .build()
-            .map_err(|e| anyhow::anyhow!("Failed to create mpegtsmux: {e}. Install gstreamer1.0-plugins-bad"))?;
+            .map_err(|e| {
+                anyhow::anyhow!("Failed to create mpegtsmux: {e}. Install gstreamer1.0-plugins-bad")
+            })?;
 
         // RTP packetizer
         let payloader = gst::ElementFactory::make("rtpmp2tpay").build()?;
@@ -169,14 +176,13 @@ impl StreamingPipeline {
                 MessageView::Eos(_) => {
                     info!("GStreamer: End of stream");
                 }
-                MessageView::StateChanged(state) => {
-                    if state.src().map(|s| s.is::<gst::Pipeline>()).unwrap_or(false) {
-                        debug!(
-                            "Pipeline state: {:?} → {:?}",
-                            state.old(),
-                            state.current()
-                        );
-                    }
+                MessageView::StateChanged(state)
+                    if state
+                        .src()
+                        .map(|s| s.is::<gst::Pipeline>())
+                        .unwrap_or(false) =>
+                {
+                    debug!("Pipeline state: {:?} → {:?}", state.old(), state.current());
                 }
                 _ => {}
             }
@@ -212,9 +218,7 @@ impl StreamingPipeline {
     pub fn is_streaming(&self) -> bool {
         self.pipeline
             .as_ref()
-            .map(|p| {
-                p.current_state() == gst::State::Playing
-            })
+            .map(|p| p.current_state() == gst::State::Playing)
             .unwrap_or(false)
     }
 }

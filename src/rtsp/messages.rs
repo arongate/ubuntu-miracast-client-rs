@@ -407,13 +407,14 @@ fn parse_headers<'a>(lines: impl Iterator<Item = &'a str>) -> HashMap<String, St
 }
 
 fn find_header_end(buf: &[u8]) -> Option<(usize, usize)> {
-    if let Some(pos) = buf.windows(4).position(|w| w == b"\r\n\r\n") {
-        Some((pos, 4))
-    } else if let Some(pos) = buf.windows(2).position(|w| w == b"\n\n") {
-        Some((pos, 2))
-    } else {
-        None
-    }
+    buf.windows(4)
+        .position(|w| w == b"\r\n\r\n")
+        .map(|pos| (pos, 4))
+        .or_else(|| {
+            buf.windows(2)
+                .position(|w| w == b"\n\n")
+                .map(|pos| (pos, 2))
+        })
 }
 
 fn extract_content_length(header_text: &str) -> usize {
@@ -544,7 +545,8 @@ mod tests {
 
     #[test]
     fn test_session_id_with_timeout() {
-        let raw = b"PLAY rtsp://x/wfd1.0 RTSP/1.0\r\nCSeq: 1\r\nSession: deadbeef;timeout=30\r\n\r\n";
+        let raw =
+            b"PLAY rtsp://x/wfd1.0 RTSP/1.0\r\nCSeq: 1\r\nSession: deadbeef;timeout=30\r\n\r\n";
         let req = RtspRequest::parse(raw).unwrap();
         assert_eq!(req.session_id(), Some("deadbeef"));
     }

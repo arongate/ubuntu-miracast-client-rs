@@ -33,9 +33,7 @@ fn main() -> anyhow::Result<()> {
     gstreamer::init()?;
 
     // Create and run GTK application
-    let app = adw::Application::builder()
-        .application_id(APP_ID)
-        .build();
+    let app = adw::Application::builder().application_id(APP_ID).build();
 
     app.connect_activate(ui::build_ui);
 
