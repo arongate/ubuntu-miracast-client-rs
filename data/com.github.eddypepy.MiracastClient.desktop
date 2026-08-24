@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=Miracast Client
+GenericName=Wireless Display
+Comment=Cast your screen to Miracast-compatible devices
+Icon=com.github.eddypepy.MiracastClient
+Exec=miracast-client
+Terminal=false
+Categories=Network;Video;
+Keywords=miracast;wireless;display;screen;cast;wifi;
+StartupNotify=true

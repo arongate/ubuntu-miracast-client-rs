@@ -1,0 +1,68 @@
+[package]
+name = "miracast-client"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["Eddy Pepy <example@example.com>"]
+description = "A desktop application for Ubuntu that enables screen and application casting to Miracast-compatible devices"
+license = "MIT"
+repository = "https://github.com/eddypepy/ubuntu-miracast-client-rs"
+readme = "README.md"
+keywords = ["miracast", "wifi-direct", "screen-casting", "wireless-display", "gtk"]
+categories = ["multimedia::video", "gui"]
+
+[dependencies]
+# GTK4 + libadwaita UI
+gtk4 = { version = "0.9", features = ["v4_12"] }
+libadwaita = { version = "0.7", features = ["v1_4"] }
+glib = "0.20"
+
+# GStreamer (in-process pipeline)
+gstreamer = "0.23"
+gstreamer-video = "0.23"
+gstreamer-app = "0.23"
+
+# Async runtime
+tokio = { version = "1", features = ["net", "time", "rt-multi-thread", "macros", "sync"] }
+
+# D-Bus (NetworkManager, wpa_supplicant, systemd)
+zbus = { version = "4", features = ["tokio"] }
+
+# Configuration
+directories = "5"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+serde_json = "1"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Utilities
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+tempfile = "3"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[package.metadata.deb]
+maintainer = "Eddy Pepy <example@example.com>"
+copyright = "2024-2026, Eddy Pepy"
+depends = "$auto, gstreamer1.0-plugins-good, gstreamer1.0-plugins-ugly"
+section = "net"
+priority = "optional"
+assets = [
+    ["target/release/miracast-client", "usr/bin/", "755"],
+    ["data/com.github.eddypepy.MiracastClient.desktop", "usr/share/applications/", "644"],
+    ["data/icons/com.github.eddypepy.MiracastClient.svg", "usr/share/icons/hicolor/scalable/apps/", "644"],
+    ["README.md", "usr/share/doc/miracast-client/", "644"],
+]
