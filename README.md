@@ -1,7 +1,7 @@
 # Ubuntu Miracast Client (Rust)
 
-[![CI](https://github.com/eddypepy/ubuntu-miracast-client-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/eddypepy/ubuntu-miracast-client-rs/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/eddypepy/ubuntu-miracast-client-rs?include_prereleases)](https://github.com/eddypepy/ubuntu-miracast-client-rs/releases)
+[![CI](https://github.com/arongate/ubuntu-miracast-client-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/arongate/ubuntu-miracast-client-rs/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/arongate/ubuntu-miracast-client-rs?include_prereleases)](https://github.com/arongate/ubuntu-miracast-client-rs/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.85+-orange.svg)](https://www.rust-lang.org/)
 
